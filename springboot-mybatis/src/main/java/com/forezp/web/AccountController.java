@@ -1,6 +1,7 @@
 package com.forezp.web;
 
 import com.forezp.entity.Account;
+import com.forezp.service.AccountHystrixCommand;
 import com.forezp.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,9 @@ public class AccountController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<Account> getAccounts() {
-        return accountService.findAccountList();
+         return new AccountHystrixCommand(accountService).execute();
+//         List<Account> accounts=accountService.findAccountList();
+//         return accounts;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

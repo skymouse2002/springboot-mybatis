@@ -28,6 +28,9 @@ public class AccountService {
         return accountMapper.findAccount(id);
     }
     public List<Account> findAccountList() {
-        return accountMapper.findAccountList();
+    	System.out.println("method list<account>");
+         List<Account> accounts= accountMapper.findAccountList();
+         System.out.println("list size is "+accounts.size());
+         return accounts;
     }
 }
