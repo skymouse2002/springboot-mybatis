@@ -7,11 +7,26 @@ import java.util.concurrent.TimeoutException;
 
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
+import com.netflix.hystrix.HystrixCommandKey;
+import com.netflix.hystrix.HystrixCommandProperties;
+import com.netflix.hystrix.HystrixThreadPoolKey;
+import com.netflix.hystrix.HystrixCommand.Setter;
 
 public class HelloWorldHystrixCommand extends HystrixCommand<String> {
 	private final String name; 
     public HelloWorldHystrixCommand(String name) {   
-        super(HystrixCommandGroupKey.Factory.asKey("ExampleGroup"));     
+//        super(HystrixCommandGroupKey.Factory.asKey("ExampleGroup")); 
+    	super(Setter
+                .withGroupKey(HystrixCommandGroupKey.Factory.asKey("SystemX"))
+                .andCommandKey(HystrixCommandKey.Factory.asKey("SecondaryCommand"))
+                .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey("SecondaryCommand"))
+                .andCommandPropertiesDefaults(
+                        // we default to a 100ms timeout for secondary
+                        HystrixCommandProperties.Setter().withExecutionTimeoutInMilliseconds(100)));
+    	//设置配置
+    	com.netflix.hystrix.HystrixCommandProperties.Setter setter=HystrixCommandProperties.Setter();
+    	setter.withCircuitBreakerEnabled(false);
+    	setter.withCircuitBreakerErrorThresholdPercentage(1);
         this.name = name; 
     }
 
