@@ -1,5 +1,6 @@
 package com.forezp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.forezp.entity.Account;
@@ -20,7 +21,16 @@ public class AccountHystrixCommand extends HystrixCommand<List<Account>> {
 	protected List<Account> run() throws Exception {
 		// TODO Auto-generated method stub
 		System.out.println(" *****AccountHystrixCommand Run");
+		
 		return  accountservice.findAccountList();
 	}
 
+	@Override
+	protected List<Account> getFallback() {
+		// TODO Auto-generated method stub
+		Account Account=new Account();
+		List<Account> list= new ArrayList<Account>();
+		list.add(Account);
+		return list;
+	}
 }
